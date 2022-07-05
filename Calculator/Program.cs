@@ -6,8 +6,21 @@ namespace Calculator
     {
         static void Main(string[] args)
         {
-            string[] validInputs = { "+" , "*" , "/" , "-"};
+            PrintWelcomeMessage();
+            while (true)
+            {
+                PerformOneCalculation();
+            }
+        }
+
+        private static void PrintWelcomeMessage()
+        {
             Console.WriteLine("Welcome to the calculator!");
+        }
+
+        private static void PerformOneCalculation()
+        {
+            string[] validInputs = { "+" , "*" , "/" , "-"};
             Console.WriteLine("Enter the operator:");
             string operatorInput = Console.ReadLine();
             int operatorIndex = Array.IndexOf(validInputs,operatorInput);
@@ -17,29 +30,25 @@ namespace Calculator
                 string numOfNumsInput = Console.ReadLine();
                 int numOfNums = int.Parse(numOfNumsInput);
                 double[] nums = new double[numOfNums];
-                Console.WriteLine("Enter number 1:");
-                string firstNum = Console.ReadLine();
-                double result = double.Parse(firstNum);
+                double result = NumberInput(1);
                 nums[0] = result;
                 for (int currentNum = 1; currentNum < numOfNums; currentNum++)
                 {
-                    Console.WriteLine("Enter number "+(currentNum+1)+":");
-                    string numInput = Console.ReadLine();
-                    nums[currentNum] = double.Parse(numInput);
-                    
+                    double numInput = NumberInput(currentNum+1);
+                    nums[currentNum] = numInput;
                     switch (operatorIndex)
                     {
                         case 0:
-                            result += double.Parse(numInput);
+                            result += numInput;
                             break;
                         case 1:
-                            result *= double.Parse(numInput);
+                            result *= numInput;
                             break;
                         case 2:
-                            result /= double.Parse(numInput);
+                            result /= numInput;
                             break;
                         case 3:
-                            result -= double.Parse(numInput);
+                            result -= numInput;
                             break;
                     }
 
@@ -51,6 +60,25 @@ namespace Calculator
             else
             {
                 Console.WriteLine("Please enter a valid operator (+,-,*,/)");
+            }
+        }
+
+        private static double NumberInput(int number)
+        {
+            Console.WriteLine("Enter number "+number+":");
+            string numInput = Console.ReadLine();
+            double numOutput;
+            while (true)
+            {
+                if (double.TryParse(numInput, out numOutput))
+                {
+                    return numOutput;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please re-enter number "+number+":");
+                    numInput = Console.ReadLine();
+                }
             }
         }
     }
